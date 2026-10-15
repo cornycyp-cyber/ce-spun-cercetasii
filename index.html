@@ -1,6 +1,6 @@
 <!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ce spun cercetașii?</title><style>
 :root{font-family:system-ui,Arial,sans-serif;color:#f6f8ff;background:#0b1430}*{box-sizing:border-box}body{margin:0}header{padding:14px 20px;background:#142450;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}h1{font-size:clamp(20px,3vw,30px);margin:0;color:#ffdc76}h2{font-size:20px}main{max-width:1200px;margin:auto;padding:16px}.bar,.actions,.teams,.cols{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.cols>section{flex:1 1 360px}.panel{background:#172851;border:1px solid #34518e;border-radius:16px;padding:16px;margin:12px 0}button,input,textarea,select{font:inherit;border-radius:9px;padding:10px;border:1px solid #5470ac}input,textarea,select{background:#0c1838;color:white;max-width:100%}input[type=number]{width:90px}input[type=file]{width:100%}textarea{width:100%;min-height:65px}button{background:#315bba;color:white;cursor:pointer}button:hover{background:#4671d3}button.secondary{background:#334568}button.danger{background:#a73d4a}button.good{background:#177e67}button:disabled{opacity:.4}label{display:block;margin:10px 0 5px;color:#d4dffb}.muted{color:#b4c3e4;font-size:13px}.hide{display:none!important}.answer{display:flex;align-items:center;gap:12px;margin:9px 0;background:linear-gradient(110deg,#213e83,#294f9c);border:2px solid #6584ce;border-radius:12px;padding:11px;min-height:62px}.answer .num{background:#f4c85f;color:#0b1430;padding:10px 15px;border-radius:8px;font-weight:900}.answer .word{flex:1;font-size:clamp(16px,2.4vw,29px);font-weight:750}.answer .points{font-size:clamp(18px,3vw,32px);color:#ffdc76;font-weight:800}.board{max-width:1000px;margin:2vh auto;padding:clamp(12px,2vw,30px);border:4px solid #f1c964;border-radius:22px;background:radial-gradient(ellipse at top,#284a96,#0a163a 75%);box-shadow:0 0 35px #182d7c}.board h2{text-align:center;font-size:clamp(22px,3.8vw,48px);margin:20px 0}.score{flex:1;text-align:center;background:#142d64;border:2px solid #c8a54f;border-radius:12px;padding:12px;min-width:120px}.score b{font-size:clamp(22px,4vw,48px);display:block}.score span{font-weight:700}.error{color:#ff7777;font-size:30px}.questioncard{border:1px solid #526da7;border-radius:12px;padding:12px;margin:12px 0}.questioncard input{width:100%}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:7px 0}.row input[type=text]{flex:1;min-width:130px}.tag{background:#243d79;border-radius:20px;padding:5px 12px}.big{font-size:22px}#toast{position:fixed;bottom:12px;right:12px;background:#203f75;padding:12px;border-radius:9px;display:none;z-index:10}body.public header,body.public #control,body.public #setup{display:none!important}body.public main{max-width:none}body.public .board{max-width:1200px}body.public #publicArea{display:block!important}#publicArea{display:none}.soundgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px}.soundgrid button{width:100%}small{color:#b4c3e4}@media(max-width:650px){.panel{padding:10px}.board{padding:10px}.answer{padding:6px;min-height:48px}.answer .num{padding:7px}}
-</style></head><body><header><h1>⚜ Ce spun cercetașii?</h1><div class="bar"><span id="status" class="tag">Mod local</span><button onclick="setTab('setup')">⚙ Pregătire</button><button onclick="setTab('control')">🎙 LIVE</button><button onclick="openPublic()">📺 Ecran public</button></div></header><main><section id="setup"><div class="panel"><h2>Pregătirea concursului</h2><p class="muted">Salvare automată în acest browser. Exportă un fișier JSON pentru copie de siguranță.</p><div id="teamInputs" class="cols"></div><div class="bar"><button onclick="addRound()">+ Adaugă rundă</button><button onclick="exportGame()">⬇ Exportă jocul</button><label style="margin:0"><input type="file" accept=".json,application/json" onchange="importGame(event)"></label><button class="danger" onclick="resetGame()">Resetare demonstrație</button></div><div id="roundEditors"></div></div><div class="panel"><h2>☁ Sincronizare LIVE v4</h2>
+</style></head><body><header><h1>⚜ Ce spun cercetașii?</h1><div class="bar"><span id="status" class="tag">Mod local</span><button onclick="setTab('setup')">⚙ Pregătire</button><button onclick="setTab('control')">🎙 LIVE</button><button onclick="openPublic()">📺 Ecran public</button></div></header><main><section id="setup"><div class="panel"><h2>Pregătirea concursului</h2><p class="muted">Salvare automată în acest browser. Exportă un fișier JSON pentru copie de siguranță.</p><div id="teamInputs" class="cols"></div><div class="bar"><button onclick="addRound()">+ Adaugă rundă</button><button onclick="exportGame()">⬇ Exportă jocul</button><label style="margin:0"><input type="file" accept=".json,application/json" onchange="importGame(event)"></label><button class="danger" onclick="resetGame()">Resetare demonstrație</button></div><div id="roundEditors"></div></div><div class="panel"><h2>☁ Sincronizare LIVE v4.1 (diagnostic)</h2>
 <p class="muted">Prezentator: autentificare și publicare a tablei. Telefon: deschide adresa cu ?view=public&room=COD_SESIUNE. Folosește doar pe HTTPS.</p>
 <label>Email prezentator</label><input id="loginEmail" type="email" autocomplete="username" placeholder="Email Firebase">
 <label>Parolă</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Parola Firebase">
@@ -67,6 +67,7 @@ window.connectPublic=async()=>{
  }catch(e){$('publicConnectionStatus').textContent='Eroare: '+e.message}
 };
 window.connectFirebase=async()=>{
+ let stage="inițializare", signedInUid="";
  try{
   if(location.protocol==='file:')throw Error('Sincronizarea v4 necesită un site HTTPS, nu fișierul local.');
   const m=await firebaseInit(),room=$('room').value.trim();
@@ -74,28 +75,31 @@ window.connectFirebase=async()=>{
   const email=$('loginEmail').value.trim(),password=$('loginPassword').value;
   if(!email||!password)throw Error('Completează emailul și parola.');
   $('firebaseStatus').textContent='Autentificare...';
+  stage="autentificare Firebase Authentication";
   const credential=await m.signInWithEmailAndPassword(auth,email,password);
-  const user=credential.user;
+  const user=credential.user; signedInUid=user.uid;
+  stage="citire /games/"+room;
   sessionRoom=room;
   dbRef=m.ref(db,'games/'+room);publicRef=m.ref(db,'publicBoards/'+room);
   const snap=await m.get(dbRef);
   if(snap.exists()){
    if(!confirm('Există un joc salvat online pentru acest cod. Îl încarci? (Anulare păstrează jocul local și îl publică)')){
-    await m.set(dbRef,clone(state));
+    stage="scriere /games/"+room; await m.set(dbRef,clone(state));
    }else{
     state={...defaultData(),...snap.val()};localStorage.setItem('cercetasi-data',JSON.stringify(state));render();
    }
-  }else await m.set(dbRef,clone(state));
+  }else stage="scriere /games/"+room; await m.set(dbRef,clone(state));
   connected=true;window.fbSet=async(_ref,data)=>{
     if(!connected)return;
     await m.set(dbRef,data);
     await m.set(publicRef,publicSnapshot(data));
   };
+  stage="scriere /publicBoards/"+room;
   await m.set(publicRef,publicSnapshot(state));
   $('status').textContent='● Online';
   $('firebaseStatus').textContent='Conectat ca '+user.email+' · sesiunea '+room;
   $('loginPassword').value='';
- }catch(e){connected=false;$('firebaseStatus').textContent='Eroare: '+e.message}
+ }catch(e){connected=false;$('firebaseStatus').textContent='Eroare la '+stage+': '+e.message+(signedInUid?' | UID autentificat: '+signedInUid:'');console.error('Firebase v4 diagnostic',stage,e)}
 };
 window.disconnectFirebase=async()=>{
  connected=false;dbRef=null;publicRef=null;
